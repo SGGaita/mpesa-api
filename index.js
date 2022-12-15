@@ -17,7 +17,9 @@ const mpesa = require('./routes/index');
  //listening to a specific route
 app.use('/',mpesa);
 
-
+app.get('/', (req, res) => {
+    res.send('Hello Uabiri!')
+  })
 
 
 app.listen(port, ()=>{
