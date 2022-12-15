@@ -17,7 +17,7 @@ const mpesa = require('./routes/index');
  //listening to a specific route
 app.use('/',mpesa);
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.send('Hello Uabiri!')
   })
 
