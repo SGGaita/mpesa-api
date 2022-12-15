@@ -6,12 +6,12 @@ const { db } = require('../firebase')
 
 
 const port = process.env.PORT
-const stk_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
-const auth_url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
-const shortcode = "174379"
-const passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
-const consumerKey = "dUSP2ZSvs0IoOloIiCniORUsQX8GBz5w"
-const consumerSecret = "RXDkBLFGA3Z0GAEr"
+const stk_url = process.env.STK_URL
+const auth_url = process.env.AUTH_URL
+const shortcode = process.env.SHORTCODE
+const passkey = process.env.PASSKEY
+const consumerKey = process.env.CONSUMER_KEY
+const consumerSecret = process.env.CONSUMER_SECRET_KEY
 
 //Current timestamp
 const current_timestamp = () => {
@@ -91,7 +91,7 @@ const mpesaSTKPush = async (req, res) => {
             "PartyA": phone,
             "PartyB": process.env.SHORTCODE,
             "PhoneNumber": phone,
-            "CallBackURL": "https://17a9-197-254-34-66.ngrok.io/callback",
+            "CallBackURL": "https://uabiri-mpesa-api.onrender.com/callback",
             "AccountReference": "U Abiri",
             "TransactionDesc": "Test"
         },
