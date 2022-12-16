@@ -79,6 +79,8 @@ const mpesaSTKPush = async (req, res) => {
     const phone = req.body.phoneNumber;
     const amount = req.body.amount
 
+
+
     const token = req.token
 
     await axios.post(stk_url,
@@ -99,8 +101,24 @@ const mpesaSTKPush = async (req, res) => {
             headers: {
                 Authorization: `Bearer ${token}`
             }
-        }).then((response) => {
+        }).then(async(response) => {
+
             res.status(200).json(response.data)
+            if (responseData.ResponseCode == 0) {
+                let checkOutID = responseData.CheckoutRequestID
+                  //Add information to database with CheckoutRequestID and any other data
+                 const transactionsRef = db.collection('Transactions').doc(checkOutID)
+ 
+                 const res2 = await transactionsRef.set({
+                      vehicleRegistration: req.body.vehicleRegistration,
+                     saccoName: req.body.saccoName,
+                      routeName: req.body.routeName
+                  })
+                 
+             } else {
+                 res.send(responseData.ResponseDescription)
+              }
+           
         }).catch((err) => {
             let err_status = err.response.status
             res.status(err_status).send({ message: err.response.data.errorMessage })
