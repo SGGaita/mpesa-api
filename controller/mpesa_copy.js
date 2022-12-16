@@ -99,7 +99,7 @@ const mpesaSTKPush = (req, res, next) => {
     axios.post(stkURL, data, {
         headers: headers
     })
-        .then(async(response, status) => {
+        .then(async(response) => {
 
             console.log("response from stk", response.data)
             let responseData = response.data
