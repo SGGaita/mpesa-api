@@ -18,7 +18,7 @@ const mpesa = require('./routes/index');
 app.use('/',mpesa);
 
 app.get('/api', (req, res) => {
-    res.send('Hello Uabiri!')
+    res.send('Hello Uabiri Sacco!')
   })
 
 
