@@ -104,6 +104,7 @@ const mpesaSTKPush = async (req, res) => {
         }).then(async(response) => {
 
             res.status(200).json(response.data)
+            let responseData = response.data
             if (responseData.ResponseCode == 0) {
                 let checkOutID = responseData.CheckoutRequestID
                   //Add information to database with CheckoutRequestID and any other data
@@ -120,35 +121,45 @@ const mpesaSTKPush = async (req, res) => {
               }
            
         }).catch((err) => {
-            let err_status = err.response.status
-            res.status(err_status).send({ message: err.response.data.errorMessage })
+            let err_status = err
+            console.log(err_status)
+            //res.status(err_status).send({ message: err.response.data.errorMessage })
         }
 
         )
 
 }
 
-const lipaNaMpesaOnlineCallback = (req, res) => {
+const lipaNaMpesaOnlineCallback =  async(req, res) => {
 
     //Get the transaction description
-    let message = req.body.Body.stkCallback
+    let resultSTKData = req.body.Body.stkCallback
     //TODO Check if resonse is 0 if yes proceed to update database
-    console.log("Callback middleware", message)
+    if (resultSTKData.ResultCode == 0) {
+        let callbackdata = req.body.Body.stkCallback.CallbackMetadata.Item
+       console.log(callbackdata)
+        let data = {}
 
-    // const transactionsRef = db.collection('Transactions').doc(message.Item[1].Value)
-    //  const res2 = await transactionsRef.set(
-    //   {
-    //    amount: message.Item[0].Value, 
-    //    transactionCode: message.Item[1].Value,
-    //    date: message.Item[3].Value,
-    //    phoneNumber: message.Item[4].Value
-    //   }
-    // )
-    // console.log({
-    //     success:true,
-    //     message
-    // });
+        //convert the callback item from Array of Objs to Object of Objs
+        callbackdata.forEach(e => {
+            data = { ...data, [e.Name]: e.Value }
+            //check if there exists a property Balance if yes delete it from the data object
+           delete data.Balance
+       }
+        )
+        //console.log("hasOwnProperty", data.hasOwnProperty('Balance'))
 
+        console.log("CBD", data)
+
+       const transactionsRef = db.collection('Transactions').doc(resultSTKData.CheckoutRequestID)
+        const res2= await transactionsRef.update(data)
+       res.send({
+            success: true,
+            message: resultSTKData.ResultDescription
+       });
+    } else {
+      res.send(resultSTKData.ResultDescription) 
+    }
 };
 
 
