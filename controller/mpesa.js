@@ -94,7 +94,7 @@ const mpesaSTKPush = async (req, res) => {
             "PartyB": process.env.SHORTCODE,
             "PhoneNumber": phone,
             "CallBackURL": "https://uabiri-mpesa-api.onrender.com/callback",
-            "AccountReference": "U Abiri",
+            "AccountReference": `Uabiri - ${req.body.vehicleRegistration}`,
             "TransactionDesc": "Test"
         },
         {
