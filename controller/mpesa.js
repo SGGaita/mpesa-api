@@ -104,6 +104,8 @@ const mpesaSTKPush = async (req, res) => {
         }).then(async(response) => {
 
             res.status(200).json(response.data)
+
+            console.log(response.data)
             let responseData = response.data
             if (responseData.ResponseCode == 0) {
                 let checkOutID = responseData.CheckoutRequestID
@@ -112,8 +114,9 @@ const mpesaSTKPush = async (req, res) => {
  
                  const res2 = await transactionsRef.set({
                       vehicleRegistration: req.body.vehicleRegistration,
-                     saccoName: req.body.saccoName,
-                      routeName: req.body.routeName
+                      saccoName: req.body.saccoName,
+                      routeName: req.body.routeName,
+                      timestamp:current_timestamp()
                   })
                  
              } else {
