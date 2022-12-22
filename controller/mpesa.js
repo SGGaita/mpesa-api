@@ -104,8 +104,9 @@ const mpesaSTKPush = async (req, res) => {
         }).then(async(response) => {
 
             res.status(200).json(response.data)
+            console.log(response.raw_body);
 
-            console.log(response.data)
+            console.log("response",response.data)
             let responseData = response.data
             if (responseData.ResponseCode == 0) {
                 let checkOutID = responseData.CheckoutRequestID
