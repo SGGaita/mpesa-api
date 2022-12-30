@@ -103,8 +103,7 @@ const mpesaSTKPush = async (req, res) => {
             }
         }).then(async(response) => {
 
-            res.status(200).json(response.data)
-            console.log(response.raw_body);
+            res.json(response.data)
 
             console.log("response",response.data)
             let responseData = response.data
@@ -127,7 +126,7 @@ const mpesaSTKPush = async (req, res) => {
         }).catch((err) => {
             let err_status = err
             console.log(err_status)
-            //res.status(err_status).send({ message: err.response.data.errorMessage })
+            res.status(err_status).send({ message: err.response.data.errorMessage })
         }
 
         )
