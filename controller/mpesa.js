@@ -103,20 +103,26 @@ const mpesaSTKPush = async (req, res) => {
             }
         }).then(async(response) => {
 
-            res.status(200).send(response.data)
+            //res.status(200).send(response.data)
 
             console.log("response",response.data)
             let responseData = response.data
+
+            res.status(200).send(responseData.MerchantRequestID)
+
+            //Saves your request to a database
             if (responseData.ResponseCode == 0) {
                 let checkOutID = responseData.CheckoutRequestID
+                let merchantID = responseData.MerchantRequestID
                   //Add information to database with CheckoutRequestID and any other data
-                 const transactionsRef = db.collection('Transactions').doc(checkOutID)
+                 const transactionsRef = db.collection('Transactions').doc(merchantID)
  
                  const res2 = await transactionsRef.set({
                       vehicleRegistration: req.body.vehicleRegistration,
                       saccoName: req.body.saccoName,
                       routeName: req.body.routeName,
-                      timestamp:current_timestamp()
+                      MerchantRequestID: merchantID,
+                      CheckoutRequestID: checkOutID,
                   })
                  
              } else {
@@ -125,7 +131,7 @@ const mpesaSTKPush = async (req, res) => {
            
         }).catch((err) => {
             let err_status = err
-            console.log(err_status)
+            //console.log(err_status)
             res.status(err_status).send({ message: err.response.data.errorMessage })
         }
 
@@ -153,14 +159,18 @@ const lipaNaMpesaOnlineCallback =  async(req, res) => {
         //console.log("hasOwnProperty", data.hasOwnProperty('Balance'))
 
         console.log("CBD", data)
+        let data2 = {...data, message: resultSTKData.ResultDescription }
 
-       const transactionsRef = db.collection('Transactions').doc(resultSTKData.CheckoutRequestID)
-        const res2= await transactionsRef.update(data)
+       const transactionsRef = db.collection('Transactions').doc(resultSTKData.MerchantRequestID)
+        const res2= await transactionsRef.update(data2)
        res.send({
             success: true,
             message: resultSTKData.ResultDescription
        });
     } else {
+
+        const transactionsRef = db.collection('Transactions').doc(resultSTKData.MerchantRequestID)
+        const res2= await transactionsRef.update({message:resultSTKData.ResultDescription })
       res.send(resultSTKData.ResultDescription) 
     }
 };
