@@ -123,7 +123,7 @@ console.log("Test stk push")
                       routeName: req.body.routeName,
                       MerchantRequestID: merchantID,
                       CheckoutRequestID: checkOutID,
-                      timestamp: db.FieldValue.serverTimestamp()
+                      timestamp: +current_timestamp()
                   })
                  
              } else {
