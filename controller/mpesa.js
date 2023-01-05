@@ -79,7 +79,7 @@ const mpesaSTKPush = async (req, res) => {
     const phone = req.body.phoneNumber;
     const amount = req.body.amount
 
-
+console.log("Test stk push")
 
     const token = req.token
 
@@ -131,8 +131,8 @@ const mpesaSTKPush = async (req, res) => {
            
         }).catch((err) => {
             let err_status = err
-            //console.log(err_status)
-            res.status(err_status).send({ message: err.response.data.errorMessage })
+            console.log(err_status)
+           // res.status(err_status).send({ message: err.response.data.errorMessage })
         }
 
         )
@@ -143,6 +143,7 @@ const lipaNaMpesaOnlineCallback =  async(req, res) => {
 
     //Get the transaction description
     let resultSTKData = req.body.Body.stkCallback
+    console.log("Stk resp",req.body.Body.stkCallback)
     //TODO Check if resonse is 0 if yes proceed to update database
     if (resultSTKData.ResultCode == 0) {
         let callbackdata = req.body.Body.stkCallback.CallbackMetadata.Item
@@ -159,19 +160,20 @@ const lipaNaMpesaOnlineCallback =  async(req, res) => {
         //console.log("hasOwnProperty", data.hasOwnProperty('Balance'))
 
         console.log("CBD", data)
-        let data2 = {...data, message: resultSTKData.ResultDescription }
 
        const transactionsRef = db.collection('Transactions').doc(resultSTKData.MerchantRequestID)
-        const res2= await transactionsRef.update(data2)
+        const res2= await transactionsRef.update({...data, message: resultSTKData.ResultDesc })
        res.send({
             success: true,
-            message: resultSTKData.ResultDescription
+            message: resultSTKData.ResultDesc
        });
     } else {
 
+        let data = {}
+
         const transactionsRef = db.collection('Transactions').doc(resultSTKData.MerchantRequestID)
-        const res2= await transactionsRef.update({message:resultSTKData.ResultDescription })
-      res.send(resultSTKData.ResultDescription) 
+        const res2= await transactionsRef.update({...data,message:resultSTKData.ResultDesc })
+      res.send(resultSTKData.ResultDesc) 
     }
 };
 
