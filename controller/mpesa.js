@@ -144,6 +144,7 @@ const lipaNaMpesaOnlineCallback =  async(req, res) => {
     //Get the transaction description
     let resultSTKData = req.body.Body.stkCallback
     console.log("Stk resp",req.body.Body.stkCallback)
+    console.log("Whole stk", req.body.Body)
     //TODO Check if resonse is 0 if yes proceed to update database
     if (resultSTKData.ResultCode == 0) {
         let callbackdata = req.body.Body.stkCallback.CallbackMetadata.Item
