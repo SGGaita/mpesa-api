@@ -17,7 +17,7 @@ const consumerSecret = process.env.CONSUMER_SECRET_KEY
 const current_timestamp = () => {
     let year = new Date().getFullYear();
 
-    let month = new Date().getMonth();
+    let month = new Date().getMonth() + 1;
 
     month = month < 10 ? `0${month}` : month;
 
