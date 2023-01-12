@@ -21,7 +21,7 @@ const current_timestamp = () => {
 
     month = month < 10 ? `0${month}` : month;
 
-    let day = new Date().getDay();
+    let day = new Date().getDate();
 
     day = day < 10 ? `0${day}` : day;
 
