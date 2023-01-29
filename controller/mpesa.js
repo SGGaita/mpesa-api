@@ -77,7 +77,8 @@ const mpesaToken = (req, res, next) => {
 const mpesaSTKPush = async (req, res) => {
 
     const phone = req.body.phoneNumber;
-    const amount = req.body.amount
+    const amount = req.body.amount;
+    
 
 console.log("Test stk push")
 
@@ -121,6 +122,8 @@ console.log("Test stk push")
                       vehicleRegistration: req.body.vehicleRegistration,
                       saccoName: req.body.saccoName,
                       routeName: req.body.routeName,
+                      totalseats:req.body.totalseats,
+                      seatsNumbers: req.body.seats,
                       MerchantRequestID: merchantID,
                       CheckoutRequestID: checkOutID,
                       timestamp: +current_timestamp()
