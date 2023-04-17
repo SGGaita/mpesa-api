@@ -89,7 +89,7 @@ console.log("Test stk push")
             "BusinessShortCode": process.env.SHORTCODE,
             "Password": newPassword(),
             "Timestamp": current_timestamp(),
-            "TransactionType": "CustomerBuyGoodsOnline",
+            "TransactionType": "CustomerPayBillOnline",
             "Amount": amount,
             "PartyA": phone,
             "PartyB": process.env.SHORTCODE,
